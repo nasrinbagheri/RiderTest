@@ -1,0 +1,20 @@
+version: "3.3"
+services:
+  mssql:
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: 10m
+        max-file: "1"
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    volumes:
+      - ./mssql:/var/opt/mssql
+    environment:
+      - TZ=${TZ}
+      - ACCEPT_EULA=Y
+      - MSSQL_DB=test
+      - MSSql
+      - MSSQL_SA_PASSWORD=Test@123456789
+    user: 0:0
+    ports:
+      - "1433:1433"
