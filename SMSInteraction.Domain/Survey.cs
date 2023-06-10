@@ -9,7 +9,7 @@ public class Survey : SmsInteraction
         InteractionType = InteractionType.Survey;
     }
 
-    public Survey(string title) : base(title)
+    public Survey(long id, string title) : base(id, title)
     {
         InteractionType = InteractionType.Survey;
     }

@@ -1,6 +1,6 @@
+using IdGen;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using SMSInteraction.Domain;
 using SMSInteraction.DtoModels.FilterDtos;
 using SMSInteraction.DtoModels.ResultDtos;
@@ -10,7 +10,8 @@ namespace SMSInteraction.Repository.Repositories;
 
 public class UserAnswerRepository : GenericRepository<UserAnswer>, IUserAnswerRepository
 {
-    public UserAnswerRepository(SmsInteractionDbContext context) : base(context)
+    public UserAnswerRepository(SmsInteractionDbContext context, IIdGenerator<long> idGenerator) : base(context,
+        idGenerator)
     {
     }
 
@@ -34,7 +35,8 @@ public class UserAnswerRepository : GenericRepository<UserAnswer>, IUserAnswerRe
 
         try
         {
-            var userAnswer = new UserAnswer(dto.MobileNo, interaction.Id, answer.Id);
+            var id = _idGenerator.CreateId();
+            var userAnswer = new UserAnswer(id, dto.MobileNo, interaction.Id, answer.Id);
             _context.UserAnswers.Add(userAnswer);
         }
         catch (DbUpdateException ex) when (ex.InnerException is SqlException { Number: 2627 or 2601 })
@@ -82,12 +84,12 @@ public class UserAnswerRepository : GenericRepository<UserAnswer>, IUserAnswerRe
             {
                 AnswerCode = g.FirstOrDefault().Answer.Code,
                 Count = g.Count(),
-               AnswerDescription = g.FirstOrDefault().Answer.Description
+                AnswerDescription = g.FirstOrDefault().Answer.Description
             }).ToList();
 
         var result = new UserAnswerStatisticsResultDto
         {
-            StatisticPerAnswers =group,
+            StatisticPerAnswers = group,
             TotalUserAnswer = total
         };
         return result;

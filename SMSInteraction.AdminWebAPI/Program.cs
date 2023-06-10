@@ -1,3 +1,4 @@
+using IdGen.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using SMSInteraction.Repository;
 using SMSInteraction.Repository.Interfaces;
@@ -14,6 +15,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<SmsInteractionDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddIdGen(0);
 builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddTransient<ISmsInteractionRepository, SmsInteractionRepository>();
 builder.Services.AddTransient<ISurveyRepository, SurveyRepository>();

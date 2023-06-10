@@ -1,3 +1,4 @@
+using IdGen;
 using SMSInteraction.Domain;
 using SMSInteraction.DtoModels.FilterDtos;
 using SMSInteraction.DtoModels.ResultDtos;
@@ -7,7 +8,8 @@ namespace SMSInteraction.Repository.Repositories;
 
 public class AnswerRepository : GenericRepository<Answer>, IAnswerRepository
 {
-    public AnswerRepository(SmsInteractionDbContext context) : base(context)
+    public AnswerRepository(SmsInteractionDbContext context, IIdGenerator<long> idGenerator) : base(context,
+        idGenerator)
     {
     }
 
@@ -47,7 +49,10 @@ public class AnswerRepository : GenericRepository<Answer>, IAnswerRepository
 
     public void Add(int interactionId, AnswerAddDto dto)
     {
-        Add(new Answer(code: dto.Code, priority: dto.Priority, isCorrect: dto.IsCorrect, description: dto.Description,
+        var id = _idGenerator.CreateId();
+
+        Add(new Answer(id: id, code: dto.Code, priority: dto.Priority, isCorrect: dto.IsCorrect,
+            description: dto.Description,
             smsInteractionId: interactionId));
     }
 

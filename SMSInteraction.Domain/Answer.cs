@@ -2,8 +2,9 @@ namespace SMSInteraction.Domain;
 
 public class Answer
 {
-    public Answer(string code, int priority, string description, bool? isCorrect, int smsInteractionId)
+    public Answer(long id, string code, int priority, string description, bool? isCorrect, long smsInteractionId)
     {
+        Id = id;
         Code = code;
         Priority = priority;
         Description = description;
@@ -12,13 +13,13 @@ public class Answer
         Enabled = true;
     }
 
-    public int Id { get; }
+    public long Id { get; }
     public string Code { get; private set; }
     public int Priority { get; private set; }
     public string Description { get; private set; }
     public bool? IsCorrect { get; private set; }
     public bool Enabled { get; private set; }
-    public int SmsInteractionId { get; }
+    public long SmsInteractionId { get; }
     public SmsInteraction SmsInteraction { get; }
     public IEnumerable<UserAnswer> UserAnswers { get; set; }
 

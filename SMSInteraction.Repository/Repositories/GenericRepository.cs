@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using IdGen;
 using SMSInteraction.Repository.Interfaces;
 
 namespace SMSInteraction.Repository.Repositories;
@@ -6,10 +7,12 @@ namespace SMSInteraction.Repository.Repositories;
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     protected readonly SmsInteractionDbContext _context;
+    protected readonly IIdGenerator<long> _idGenerator;
 
-    public GenericRepository(SmsInteractionDbContext context)
+    public GenericRepository(SmsInteractionDbContext context, IIdGenerator<long> idGenerator)
     {
         _context = context;
+        _idGenerator = idGenerator;
     }
 
     public T? GetById(int id)

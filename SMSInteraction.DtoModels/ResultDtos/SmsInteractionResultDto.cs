@@ -4,9 +4,9 @@ namespace SMSInteraction.DtoModels.ResultDtos;
 
 public class SmsInteractionResultDto
 {
-    public int Id { get; set; }
+    public long Id { get; set; }
     public InteractionType InteractionType { get; set; }
-    public string Title { get; set; }
+    public string? Title { get; set; }
     public DateTime CreationUtcDateTime { get; set; }
     public bool Enabled { get; set; }
     public DateTime? EnabledUtcDateTime { get; set; }

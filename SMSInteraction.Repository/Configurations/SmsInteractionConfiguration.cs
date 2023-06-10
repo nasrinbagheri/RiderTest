@@ -9,7 +9,7 @@ public class SmsInteractionConfiguration : IEntityTypeConfiguration<SmsInteracti
 {
     public void Configure(EntityTypeBuilder<SmsInteraction> builder)
     {
-        builder.Property(b => b.Id).IsRequired().UseIdentityColumn();
+        builder.Property(b => b.Id).IsRequired().ValueGeneratedNever();
         builder.Property(b => b.Enabled).IsRequired();
         builder.Property(b => b.CreationUtcDateTime).IsRequired();
         builder.Property(b => b.Title).IsRequired().HasMaxLength(250);
@@ -21,9 +21,13 @@ public class SmsInteractionConfiguration : IEntityTypeConfiguration<SmsInteracti
             .IsComplete(false);
 
         builder.HasMany(b => b.Answers)
-            .WithOne(b => b.SmsInteraction).HasForeignKey(a => a.SmsInteractionId);
+            .WithOne(b => b.SmsInteraction)
+            .HasForeignKey(a => a.SmsInteractionId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(b => b.Lottary).WithOne(l => l.SmsInteraction)
-            .HasForeignKey<Lottary>(t=>t.SmsInteractionId);
+        builder.HasOne(b => b.Lottery)
+            .WithOne(l => l.SmsInteraction)
+            .HasForeignKey<Lottery>(t => t.SmsInteractionId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

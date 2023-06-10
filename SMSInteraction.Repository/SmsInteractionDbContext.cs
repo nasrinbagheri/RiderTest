@@ -19,7 +19,7 @@ public class SmsInteractionDbContext : DbContext
     public DbSet<Survey> Surveys { get; set; }
     public DbSet<Answer> Answers { get; set; }
     public DbSet<UserAnswer> UserAnswers { get; set; }
-    public DbSet<Lottary> Lottaries { get; set; }
+    public DbSet<Lottery> Lottaries { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,7 +29,7 @@ public class SmsInteractionDbContext : DbContext
         new SurveyConfiguration().Configure(modelBuilder.Entity<Survey>());
         new AnswerConfiguration().Configure(modelBuilder.Entity<Answer>());
         new UserAnswerConfiguration().Configure(modelBuilder.Entity<UserAnswer>());
-        new LottaryConfiguration().Configure(modelBuilder.Entity<Lottary>());
+        new LotteryConfiguration().Configure(modelBuilder.Entity<Lottery>());
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -2,21 +2,27 @@ namespace SMSInteraction.Domain;
 
 public class UserAnswer
 {
-    public UserAnswer(string mobileNo, int smsInteractionId, int answerId)
+    public UserAnswer(long id, string mobileNo, long smsInteractionId, long answerId)
     {
+        Id = id;
         MobileNo = mobileNo;
         SmsInteractionId = smsInteractionId;
         AnswerId = answerId;
         CreationUtcDatetime = DateTime.UtcNow;
     }
 
-    public int Id { get; private set; }
+    public long Id { get; private set; }
     public string MobileNo { get; private set; }
     public DateTime CreationUtcDatetime { get; private set; }
-    public int SmsInteractionId { get; private set; }
+    public long SmsInteractionId { get; private set; }
     public SmsInteraction SmsInteraction { get; set; }
-    public int AnswerId { get; private set; }
+    public long AnswerId { get; private set; }
     public Answer Answer { get; set; }
-    public int? LottaryId { get;private set; }
-    public Lottary? Lottary { get; set; }
+    public long? LotteryId { get; private set; }
+    public Lottery? Lottery { get; set; }
+
+    public void SetWinnerIn(long lotteryId)
+    {
+        LotteryId = lotteryId;
+    }
 }

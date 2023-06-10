@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using SMSInteraction.AdminWebAPI.ResultModels;
-using SMSInteraction.Domain;
 using SMSInteraction.DtoModels.FilterDtos;
 using SMSInteraction.DtoModels.ResultDtos;
 using SMSInteraction.Enums;
@@ -34,10 +33,12 @@ public class SmsInteractionController : ControllerBase
         switch (model.InteractionType)
         {
             case InteractionType.Contest:
-                _unitOfWork.SmsInteractionRepository.Add(new Contest(title: model.Title));
+                //_unitOfWork.SmsInteractionRepository.Add(new Contest(title: model.Title));
+                //todo:edit upper line
                 break;
             case InteractionType.Survey:
-                _unitOfWork.SmsInteractionRepository.Add(new Survey(title: model.Title));
+                //_unitOfWork.SmsInteractionRepository.Add(new Survey(title: model.Title));
+                //todo 
                 break;
         }
 
@@ -104,5 +105,13 @@ public class SmsInteractionController : ControllerBase
     {
         var result = _unitOfWork.UserAnswerRepository.GetUserAnswerStatistics(interactionId);
         return ResultModel<UserAnswerStatisticsResultDto>.Ok(result);
+    }
+
+    [HttpPost("{interactionId}/lottery")]
+    public ResultModel AddLottery([FromRoute] int interactionId, [FromBody] LotteryAddDto dto)
+    {
+        _unitOfWork.SmsInteractionRepository.SaveLottery(interactionId, dto.WinnerCount);
+        _unitOfWork.Complete();
+        return ResultModel.Ok();
     }
 }

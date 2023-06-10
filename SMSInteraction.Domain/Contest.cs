@@ -9,7 +9,7 @@ public class Contest : SmsInteraction
         InteractionType = InteractionType.Contest;
     }
 
-    public Contest(string title) : base(title)
+    public Contest(long id, string title) : base(id, title)
     {
         InteractionType = InteractionType.Contest;
     }

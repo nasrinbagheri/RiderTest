@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="IdGen" Version="3.0.3" />
+        <PackageReference Include="IdGen.DependencyInjection" Version="3.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SMSInteraction.DtoModels\SMSInteraction.DtoModels.csproj" />
+      <ProjectReference Include="..\SMSInteraction.Repository\SMSInteraction.Repository.csproj" />
+    </ItemGroup>
+
+</Project>

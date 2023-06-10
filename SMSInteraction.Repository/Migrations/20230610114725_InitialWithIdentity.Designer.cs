@@ -12,8 +12,8 @@ using SMSInteraction.Repository;
 namespace SMSInteraction.Repository.Migrations
 {
     [DbContext(typeof(SmsInteractionDbContext))]
-    [Migration("20230606065315_AddUserAnswers")]
-    partial class AddUserAnswers
+    [Migration("20230610114725_InitialWithIdentity")]
+    partial class InitialWithIdentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,8 @@ namespace SMSInteraction.Repository.Migrations
 
             modelBuilder.Entity("SMSInteraction.Domain.Answer", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -54,8 +51,8 @@ namespace SMSInteraction.Repository.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
-                    b.Property<int>("SmsInteractionId")
-                        .HasColumnType("int");
+                    b.Property<long>("SmsInteractionId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -64,13 +61,32 @@ namespace SMSInteraction.Repository.Migrations
                     b.ToTable("Answers");
                 });
 
-            modelBuilder.Entity("SMSInteraction.Domain.SmsInteraction", b =>
+            modelBuilder.Entity("SMSInteraction.Domain.Lottery", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreationDateTimeUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("SmsInteractionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("WinnerCount")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.HasKey("Id");
+
+                    b.HasIndex("SmsInteractionId")
+                        .IsUnique();
+
+                    b.ToTable("Lottaries");
+                });
+
+            modelBuilder.Entity("SMSInteraction.Domain.SmsInteraction", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreationUtcDateTime")
                         .HasColumnType("datetime2");
@@ -89,6 +105,9 @@ namespace SMSInteraction.Repository.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
+                    b.Property<long?>("LotteryId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -105,29 +124,31 @@ namespace SMSInteraction.Repository.Migrations
 
             modelBuilder.Entity("SMSInteraction.Domain.UserAnswer", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AnswerId")
-                        .HasColumnType("int");
+                    b.Property<long>("AnswerId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreationUtcDatetime")
                         .HasColumnType("datetime2");
+
+                    b.Property<long?>("LotteryId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("MobileNo")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("SmsInteractionId")
-                        .HasColumnType("int");
+                    b.Property<long>("SmsInteractionId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AnswerId");
+
+                    b.HasIndex("LotteryId");
 
                     b.HasIndex("SmsInteractionId");
 
@@ -156,7 +177,18 @@ namespace SMSInteraction.Repository.Migrations
                     b.HasOne("SMSInteraction.Domain.SmsInteraction", "SmsInteraction")
                         .WithMany("Answers")
                         .HasForeignKey("SmsInteractionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("SmsInteraction");
+                });
+
+            modelBuilder.Entity("SMSInteraction.Domain.Lottery", b =>
+                {
+                    b.HasOne("SMSInteraction.Domain.SmsInteraction", "SmsInteraction")
+                        .WithOne("Lottery")
+                        .HasForeignKey("SMSInteraction.Domain.Lottery", "SmsInteractionId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("SmsInteraction");
@@ -167,16 +199,23 @@ namespace SMSInteraction.Repository.Migrations
                     b.HasOne("SMSInteraction.Domain.Answer", "Answer")
                         .WithMany("UserAnswers")
                         .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("SMSInteraction.Domain.Lottery", "Lottery")
+                        .WithMany("Winners")
+                        .HasForeignKey("LotteryId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("SMSInteraction.Domain.SmsInteraction", "SmsInteraction")
                         .WithMany("UserAnswers")
                         .HasForeignKey("SmsInteractionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Answer");
+
+                    b.Navigation("Lottery");
 
                     b.Navigation("SmsInteraction");
                 });
@@ -186,9 +225,16 @@ namespace SMSInteraction.Repository.Migrations
                     b.Navigation("UserAnswers");
                 });
 
+            modelBuilder.Entity("SMSInteraction.Domain.Lottery", b =>
+                {
+                    b.Navigation("Winners");
+                });
+
             modelBuilder.Entity("SMSInteraction.Domain.SmsInteraction", b =>
                 {
                     b.Navigation("Answers");
+
+                    b.Navigation("Lottery");
 
                     b.Navigation("UserAnswers");
                 });

@@ -9,4 +9,5 @@ public interface ISmsInteractionRepository : IGenericRepository<SmsInteraction>
     public BasePaginatedResultDto<SmsInteractionListResultDto> Get(SmsInteractionListFilterDto filter);
     public SmsInteractionResultDto? Get(int id);
     public void Edit(int id, SmsInteractionEditDto dto);
+    public void SaveLottery(int id,int winnerCount);
 }

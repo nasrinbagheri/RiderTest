@@ -1,14 +1,17 @@
+using IdGen;
 using Microsoft.EntityFrameworkCore;
 using SMSInteraction.Domain;
 using SMSInteraction.DtoModels.FilterDtos;
 using SMSInteraction.DtoModels.ResultDtos;
+using SMSInteraction.Enums;
 using SMSInteraction.Repository.Interfaces;
 
 namespace SMSInteraction.Repository.Repositories;
 
 public class SmsInteractionRepository : GenericRepository<SmsInteraction>, ISmsInteractionRepository
 {
-    public SmsInteractionRepository(SmsInteractionDbContext context) : base(context)
+    public SmsInteractionRepository(SmsInteractionDbContext context, IIdGenerator<long> idGenerator) : base(context,
+        idGenerator)
     {
     }
 
@@ -87,5 +90,43 @@ public class SmsInteractionRepository : GenericRepository<SmsInteraction>, ISmsI
         {
             query.Disable();
         }
+    }
+
+    public void SaveLottery(int id, int winnerCount)
+    {
+        var now = DateTime.UtcNow;
+        var interaction = _context.SmsInteractions.Include(s => s.Answers)
+            .FirstOrDefault(s => s.Id == id && s.DisabledUtcDateTime <= now);
+        if (interaction == null)
+        {
+            //todo:throw exception
+            return;
+        }
+
+        var correctAnswer = interaction.Answers.FirstOrDefault(a => a.IsCorrect == true);
+
+        var users = _context.UserAnswers.Where(ua => ua.SmsInteractionId == interaction.Id).AsQueryable();
+
+        if (interaction.InteractionType == InteractionType.Contest && correctAnswer != null)
+        {
+            users = users.Where(ua => ua.AnswerId == correctAnswer.Id);
+        }
+
+        var userAnswersIds = users.Select(s => s.Id).ToList();
+
+        var winnerIds = userAnswersIds.OrderBy(i => Guid.NewGuid()).Take(winnerCount).ToList();
+
+        var winners = _context.UserAnswers.Where(ua => winnerIds.Contains(ua.Id))
+            .AsNoTracking().ToList();
+
+        var lotteryId = _idGenerator.CreateId();
+        var lottery = new Lottery(lotteryId, interaction.Id, winnerCount);
+
+        foreach (var userAnswer in winners)
+        {
+            userAnswer.SetWinnerIn(lotteryId);
+        }
+
+        _context.Lottaries.Add(lottery);
     }
 }
