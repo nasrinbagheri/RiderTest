@@ -13,7 +13,7 @@ public class AnswerRepository : GenericRepository<Answer>, IAnswerRepository
     {
     }
 
-    public List<AnswerResultDto> GetAnswersOfInteraction(int interactionId)
+    public List<AnswerResultDto> GetAnswersOfInteraction(long interactionId)
     {
         var query = _context.Answers.Where(a => a.SmsInteractionId == interactionId).AsQueryable();
 
@@ -30,7 +30,7 @@ public class AnswerRepository : GenericRepository<Answer>, IAnswerRepository
         return result;
     }
 
-    public AnswerResultDto? GetAnswer(int answerId)
+    public AnswerResultDto? GetAnswer(long answerId)
     {
         var answer = _context.Answers.FirstOrDefault(a => a.Id == answerId);
         if (answer == null)
@@ -47,7 +47,7 @@ public class AnswerRepository : GenericRepository<Answer>, IAnswerRepository
         };
     }
 
-    public void Add(int interactionId, AnswerAddDto dto)
+    public void Add(long interactionId, AnswerAddDto dto)
     {
         var id = _idGenerator.CreateId();
 
@@ -56,7 +56,7 @@ public class AnswerRepository : GenericRepository<Answer>, IAnswerRepository
             smsInteractionId: interactionId));
     }
 
-    public void EditAnswer(int answerId, AnswerEditDto dto)
+    public void EditAnswer(long answerId, AnswerEditDto dto)
     {
         var answer = GetById(answerId);
         if (answer == null)

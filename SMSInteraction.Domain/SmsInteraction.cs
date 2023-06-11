@@ -47,5 +47,10 @@ namespace SMSInteraction.Domain
         {
             Title = title;
         }
+
+        public void SetLottery(long lotteryId)
+        {
+            LotteryId = lotteryId;
+        }
     }
 }

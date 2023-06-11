@@ -6,8 +6,9 @@ namespace SMSInteraction.Repository.Interfaces;
 
 public interface ISmsInteractionRepository : IGenericRepository<SmsInteraction>
 {
+    public void Add(SmsInteractionAddDto dto);
     public BasePaginatedResultDto<SmsInteractionListResultDto> Get(SmsInteractionListFilterDto filter);
-    public SmsInteractionResultDto? Get(int id);
-    public void Edit(int id, SmsInteractionEditDto dto);
-    public void SaveLottery(int id,int winnerCount);
+    public SmsInteractionResultDto? Get(long id);
+    public void Edit(long id, SmsInteractionEditDto dto);
+    public void SaveLottery(long id,int winnerCount);
 }

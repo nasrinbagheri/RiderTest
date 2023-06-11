@@ -15,6 +15,20 @@ public class SmsInteractionRepository : GenericRepository<SmsInteraction>, ISmsI
     {
     }
 
+    public void Add(SmsInteractionAddDto dto)
+    {
+        var id = _idGenerator.CreateId();
+        switch (dto.InteractionType)
+        {
+            case InteractionType.Contest:
+                Add(new Contest(id: id, title: dto.Title));
+                break;
+            case InteractionType.Survey:
+                Add(new Survey(id: id, title: dto.Title));
+                break;
+        }
+    }
+
     public BasePaginatedResultDto<SmsInteractionListResultDto> Get(SmsInteractionListFilterDto filter)
     {
         var query = _context.SmsInteractions.AsQueryable();
@@ -44,7 +58,7 @@ public class SmsInteractionRepository : GenericRepository<SmsInteraction>, ISmsI
         return new BasePaginatedResultDto<SmsInteractionListResultDto>(filter.PageNo, filter.PageSize, total, result);
     }
 
-    public SmsInteractionResultDto? Get(int id)
+    public SmsInteractionResultDto? Get(long id)
     {
         var smsInteraction = _context.SmsInteractions.Include(s => s.Answers).FirstOrDefault(s => s.Id == id);
         if (smsInteraction == null)
@@ -73,7 +87,7 @@ public class SmsInteractionRepository : GenericRepository<SmsInteraction>, ISmsI
         return t;
     }
 
-    public void Edit(int id, SmsInteractionEditDto dto)
+    public void Edit(long id, SmsInteractionEditDto dto)
     {
         var query = _context.SmsInteractions.FirstOrDefault(s => s.Id == id);
         //if null exception
@@ -92,8 +106,13 @@ public class SmsInteractionRepository : GenericRepository<SmsInteraction>, ISmsI
         }
     }
 
-    public void SaveLottery(int id, int winnerCount)
+    public void SaveLottery(long id, int winnerCount)
     {
+        if (winnerCount < 1)
+        {
+            //todo throw exception
+        }
+
         var now = DateTime.UtcNow;
         var interaction = _context.SmsInteractions.Include(s => s.Answers)
             .FirstOrDefault(s => s.Id == id && s.DisabledUtcDateTime <= now);
@@ -116,17 +135,23 @@ public class SmsInteractionRepository : GenericRepository<SmsInteraction>, ISmsI
 
         var winnerIds = userAnswersIds.OrderBy(i => Guid.NewGuid()).Take(winnerCount).ToList();
 
+        if (winnerIds.Count == 0)
+        {
+            //todo throw exception
+        }
+
         var winners = _context.UserAnswers.Where(ua => winnerIds.Contains(ua.Id))
-            .AsNoTracking().ToList();
+            .ToList();
 
         var lotteryId = _idGenerator.CreateId();
         var lottery = new Lottery(lotteryId, interaction.Id, winnerCount);
+
+        _context.Lottaries.Add(lottery);
+        interaction.SetLottery(lotteryId);
 
         foreach (var userAnswer in winners)
         {
             userAnswer.SetWinnerIn(lotteryId);
         }
-
-        _context.Lottaries.Add(lottery);
     }
 }

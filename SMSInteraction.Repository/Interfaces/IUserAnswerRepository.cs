@@ -8,8 +8,8 @@ public interface IUserAnswerRepository : IGenericRepository<UserAnswer>
 {
     public void AddUserAnswer(UserAnswerAddDto dto);
 
-    public BasePaginatedResultDto<InteractionUserAnswerListResultDto> GetUserAnswers(int interactionId,
+    public BasePaginatedResultDto<InteractionUserAnswerListResultDto> GetUserAnswers(long interactionId,
         InteractionUserAnswerFilterDto dto);
 
-    public UserAnswerStatisticsResultDto GetUserAnswerStatistics(int interactionId);
+    public UserAnswerStatisticsResultDto GetUserAnswerStatistics(long interactionId);
 }

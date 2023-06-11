@@ -45,7 +45,7 @@ public class UserAnswerRepository : GenericRepository<UserAnswer>, IUserAnswerRe
         }
     }
 
-    public BasePaginatedResultDto<InteractionUserAnswerListResultDto> GetUserAnswers(int interactionId,
+    public BasePaginatedResultDto<InteractionUserAnswerListResultDto> GetUserAnswers(long interactionId,
         InteractionUserAnswerFilterDto dto)
     {
         var userAnswers = _context.UserAnswers.Where(ua => ua.SmsInteractionId == interactionId);
@@ -73,7 +73,7 @@ public class UserAnswerRepository : GenericRepository<UserAnswer>, IUserAnswerRe
         return new BasePaginatedResultDto<InteractionUserAnswerListResultDto>(dto.PageNo, dto.PageSize, total, result);
     }
 
-    public UserAnswerStatisticsResultDto GetUserAnswerStatistics(int interactionId)
+    public UserAnswerStatisticsResultDto GetUserAnswerStatistics(long interactionId)
     {
         var userAnswers = _context.UserAnswers.Where(ua => ua.SmsInteractionId == interactionId).AsNoTracking()
             .AsQueryable();
