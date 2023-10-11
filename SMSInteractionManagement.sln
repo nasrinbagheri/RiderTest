@@ -6,11 +6,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSInteraction.Repository",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSInteraction.AdminWebAPI", "SMSInteraction.AdminWebAPI\SMSInteraction.AdminWebAPI.csproj", "{63F1C540-B059-4A90-8D23-DFE4EDDDB556}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{46250D0C-2128-446C-BFFE-2AE6E30CC9A4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSInteraction.DtoModels", "SMSInteraction.DtoModels\SMSInteraction.DtoModels.csproj", "{ECA24C59-D333-43C9-9C84-DAE70EB6AE10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSInteraction.Enums", "SMSInteraction.Enums\SMSInteraction.Enums.csproj", "{AF133A6A-6961-4704-8873-30BDF322C520}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSInteraction.Common", "SMSInteraction.Common\SMSInteraction.Common.csproj", "{0C15F7EE-C1E7-456E-A0D6-0C6C4060FFA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,10 +30,6 @@ Global
 		{63F1C540-B059-4A90-8D23-DFE4EDDDB556}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63F1C540-B059-4A90-8D23-DFE4EDDDB556}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63F1C540-B059-4A90-8D23-DFE4EDDDB556}.Release|Any CPU.Build.0 = Release|Any CPU
-		{46250D0C-2128-446C-BFFE-2AE6E30CC9A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{46250D0C-2128-446C-BFFE-2AE6E30CC9A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{46250D0C-2128-446C-BFFE-2AE6E30CC9A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{46250D0C-2128-446C-BFFE-2AE6E30CC9A4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ECA24C59-D333-43C9-9C84-DAE70EB6AE10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ECA24C59-D333-43C9-9C84-DAE70EB6AE10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECA24C59-D333-43C9-9C84-DAE70EB6AE10}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -42,5 +38,9 @@ Global
 		{AF133A6A-6961-4704-8873-30BDF322C520}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF133A6A-6961-4704-8873-30BDF322C520}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF133A6A-6961-4704-8873-30BDF322C520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C15F7EE-C1E7-456E-A0D6-0C6C4060FFA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C15F7EE-C1E7-456E-A0D6-0C6C4060FFA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C15F7EE-C1E7-456E-A0D6-0C6C4060FFA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C15F7EE-C1E7-456E-A0D6-0C6C4060FFA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,5 +1,6 @@
 using IdGen;
 using Microsoft.EntityFrameworkCore;
+using SMSInteraction.Common.Exceptions;
 using SMSInteraction.Domain;
 using SMSInteraction.DtoModels.FilterDtos;
 using SMSInteraction.DtoModels.ResultDtos;
@@ -110,16 +111,16 @@ public class SmsInteractionRepository : GenericRepository<SmsInteraction>, ISmsI
     {
         if (winnerCount < 1)
         {
-            //todo throw exception
+            throw new LotteryWinnerCountException();
         }
 
         var now = DateTime.UtcNow;
         var interaction = _context.SmsInteractions.Include(s => s.Answers)
             .FirstOrDefault(s => s.Id == id && s.DisabledUtcDateTime <= now);
+
         if (interaction == null)
         {
-            //todo:throw exception
-            return;
+            throw new SmsInteractionNotFoundException();
         }
 
         var correctAnswer = interaction.Answers.FirstOrDefault(a => a.IsCorrect == true);
@@ -137,7 +138,7 @@ public class SmsInteractionRepository : GenericRepository<SmsInteraction>, ISmsI
 
         if (winnerIds.Count == 0)
         {
-            //todo throw exception
+            throw new LotteryPossibleWinnerCountException();
         }
 
         var winners = _context.UserAnswers.Where(ua => winnerIds.Contains(ua.Id))

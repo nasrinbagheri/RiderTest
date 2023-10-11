@@ -1,6 +1,7 @@
 using IdGen;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using SMSInteraction.Common.Exceptions;
 using SMSInteraction.Domain;
 using SMSInteraction.DtoModels.FilterDtos;
 using SMSInteraction.DtoModels.ResultDtos;
@@ -22,15 +23,13 @@ public class UserAnswerRepository : GenericRepository<UserAnswer>, IUserAnswerRe
 
         if (interaction == null)
         {
-            //todo:exception
-            return;
+            throw new SmsInteractionNotFoundException();
         }
 
         var answer = interaction.Answers.FirstOrDefault(a => a.Enabled && a.Code == dto.AnswerCode);
         if (answer == null)
         {
-            //todo:exception
-            return;
+            throw new AnswerNotFoundException();
         }
 
         try
@@ -41,7 +40,7 @@ public class UserAnswerRepository : GenericRepository<UserAnswer>, IUserAnswerRe
         }
         catch (DbUpdateException ex) when (ex.InnerException is SqlException { Number: 2627 or 2601 })
         {
-//todo:duplicate
+            //duplicate
         }
     }
 

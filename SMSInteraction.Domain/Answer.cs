@@ -1,3 +1,5 @@
+using SMSInteraction.Common.Exceptions;
+
 namespace SMSInteraction.Domain;
 
 public class Answer
@@ -25,7 +27,11 @@ public class Answer
 
     public void SetCode(string code)
     {
-        //todo: add validation not redundant code
+        if (string.IsNullOrEmpty(code))
+        {
+            throw new ValueCanNotBeNullException("Code");
+        }
+
         Code = code;
     }
 

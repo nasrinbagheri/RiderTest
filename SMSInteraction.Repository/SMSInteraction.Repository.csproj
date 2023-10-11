@@ -25,6 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\SMSInteraction.Common\SMSInteraction.Common.csproj" />
       <ProjectReference Include="..\SMSInteraction.Domain\SMSInteraction.Domain.csproj" />
       <ProjectReference Include="..\SMSInteraction.DtoModels\SMSInteraction.DtoModels.csproj" />
     </ItemGroup>

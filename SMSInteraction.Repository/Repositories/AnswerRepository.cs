@@ -1,4 +1,5 @@
 using IdGen;
+using SMSInteraction.Common.Exceptions;
 using SMSInteraction.Domain;
 using SMSInteraction.DtoModels.FilterDtos;
 using SMSInteraction.DtoModels.ResultDtos;
@@ -60,8 +61,12 @@ public class AnswerRepository : GenericRepository<Answer>, IAnswerRepository
     {
         var answer = GetById(answerId);
         if (answer == null)
+            throw new AnswerNotFoundException();
+
+        var duplicateCodeCount = _context.Answers.Count(a => a.Code == dto.Code && a.Id != answerId);
+        if (duplicateCodeCount > 0)
         {
-            return; //todo: exception
+            throw new DuplicateAnswerCodeException();
         }
 
         answer.SetCode(dto.Code);
