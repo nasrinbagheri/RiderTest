@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSInteraction.Enums", "SMS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSInteraction.Common", "SMSInteraction.Common\SMSInteraction.Common.csproj", "{0C15F7EE-C1E7-456E-A0D6-0C6C4060FFA4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSInteraction.BlazorApp", "SMSInteraction.BlazorApp\SMSInteraction.BlazorApp.csproj", "{5C3A0286-B797-40C2-A604-5539D3AA5DC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{0C15F7EE-C1E7-456E-A0D6-0C6C4060FFA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C15F7EE-C1E7-456E-A0D6-0C6C4060FFA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C15F7EE-C1E7-456E-A0D6-0C6C4060FFA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C3A0286-B797-40C2-A604-5539D3AA5DC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C3A0286-B797-40C2-A604-5539D3AA5DC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C3A0286-B797-40C2-A604-5539D3AA5DC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C3A0286-B797-40C2-A604-5539D3AA5DC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
