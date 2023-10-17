@@ -1,0 +1,39 @@
+@page "/sms-list"
+@using SMSInteraction.BlazorApp.Models
+@using SMSInteraction.BlazorApp.Constatnts
+@inject HttpClient HttpClient
+
+@if (SmsResult == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <MudDataGrid Items="@SmsResult" Filterable="false" SortMode="@SortMode.None" Groupable="false">
+        <Columns>
+            <PropertyColumn Property="x => x.CreationUtcDateTime" />
+            @* <PropertyColumn Property="x => x.Position" /> *@
+            @* <PropertyColumn Property="x => x.YearsEmployed" Title="Years Employed" /> *@
+        
+        </Columns>
+    </MudDataGrid>
+}
+
+
+@code {
+
+    public IEnumerable<SmsInteractionListResultModelView>? SmsResult;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var apiResult = await HttpClient.GetFromJsonAsync<ResultViewModel<BasePaginatedResultViewModel<SmsInteractionListResultModelView>>>(Constant.GetSmsListUrl);
+        if (apiResult is {Successful: true })
+        {
+
+            SmsResult = apiResult.Result?.List;
+        }
+    }
+
+}

@@ -22,7 +22,7 @@ builder.Services.AddTransient<ISurveyRepository, SurveyRepository>();
 builder.Services.AddTransient<IAnswerRepository, AnswerRepository>();
 builder.Services.AddTransient<IUserAnswerRepository, UserAnswerRepository>();
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-
+builder.Services.AddCors();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,7 +35,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseCors(corsPolicyBuilder => corsPolicyBuilder
+    .AllowAnyOrigin()
+    .AllowAnyMethod());
 app.MapControllers();
 
 app.Run();
